@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "root",
+    "password": "18817202463",
+    "database": "graduate-project",
+    "host": "106.13.174.41",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "test": {
+    "username": "root",
+    "password": "18817202463",
+    "database": "graduate-project",
+    "host": "106.13.174.41",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "production": {
+    "username": "root",
+    "password": "18817202463",
+    "database": "graduate-project",
+    "host": "106.13.174.41",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  }
+}
