@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     getDetail() {
-      this.$http.get('/law/getLawById', {
+      this.$http.get('/api/law/getLawById', {
         params: {
           id: this.id,
         },

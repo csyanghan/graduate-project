@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$http.post('/user/register', {
+      this.$http.post('/api/user/register', {
         username: this.registerForm.username,
         password: this.registerForm.password,
       }).then((res) => {

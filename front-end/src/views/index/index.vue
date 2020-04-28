@@ -87,7 +87,7 @@ export default {
       this.loading = true;
       this.searchResultList = [];
       this.totalListLength = 0;
-      this.$http.post('/law/search', {
+      this.$http.post('/api/law/search', {
         keyword: this.searchKeyword,
       }).then((res) => {
         this.searchResultList = res.data.data;
@@ -100,7 +100,7 @@ export default {
       return `/detail/${id}`;
     },
     getRecommendLaw() {
-      this.$http.get('/law/recommend').then((res) => {
+      this.$http.get('/api/law/recommend').then((res) => {
         this.recommendList = res.data.data.slice(0, 9);
       });
     },

@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$http.post('/user/login', {
+      this.$http.post('/api/user/login', {
         username: this.loginForm.username,
         password: this.loginForm.password,
       }).then((res) => {

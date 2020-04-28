@@ -26,7 +26,7 @@ export default {
     NavBar,
   },
   async mounted() {
-    const res = await this.$http.get('/user/userInfo');
+    const res = await this.$http.get('/api/user/userInfo');
     if (res.data.code === 200) {
       this.$store.commit('userLogin', {
         userInfo: res.data.data,
