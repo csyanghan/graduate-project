@@ -13,8 +13,6 @@ run/
 typings/
 .nyc_output/
 
-dbconfig.js
-
 */venv/
 
 __pycache__
