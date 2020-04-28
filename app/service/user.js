@@ -17,7 +17,7 @@ class UserService extends Service {
   }
 
   async loginAndGetUser(username, password) {
-    const user = await this.app.mysql.get('users', { username  });
+    const user = await this.app.mysql.get('users', { username });
     if (!user || user.password !== password) {
       return false;
     }

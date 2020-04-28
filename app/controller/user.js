@@ -40,10 +40,30 @@ class UserController extends Controller {
     } else {
       // 设置 Session
       ctx.session.user = { id: user.id, username: user.username };
+      ctx.cookies.set('userId', user.id, {
+        httpOnly: false,
+      });
       ctx.body = {
         code: 200,
         data: user,
         msg: '登录成功!',
+      };
+    }
+  }
+
+  async getUserInfo() {
+    const { ctx } = this;
+    const userId = ctx.cookies.get('userId');
+    const user = await this.app.mysql.get('users', { id: userId });
+    if (user) {
+      ctx.body = {
+        code: 200,
+        data: user,
+      };
+    } else {
+      ctx.body = {
+        code: 401,
+        data: {},
       };
     }
   }

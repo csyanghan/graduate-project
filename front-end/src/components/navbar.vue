@@ -22,6 +22,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import Cookies from 'js-cookie';
 
 export default {
   name: 'NavBar',
@@ -40,6 +41,7 @@ export default {
         this.$store.commit('userLogin', {
           userInfo: {},
         });
+        Cookies.remove('userId');
       }
       if (command === 'user-info') this.$router.push({ path: '/user-info' });
       if (command === 'message') this.$router.push({ path: '/message' });

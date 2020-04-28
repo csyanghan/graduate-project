@@ -9,11 +9,28 @@
     <div class="search-list">
       <div class="loading" v-if="loading">
         <pacman-loader :loading="loading" color="#409EFF"></pacman-loader>
-        <div class="text">数据搜索中</div>
+        <div class="text">案例搜索中</div>
       </div>
       <h3 v-if="showSearchResultTitle">搜索结果: 花了 {{ time }} s {{ prompt }}</h3>
       <el-row :gutter="24">
         <el-col :span="8" v-for="law in searchResultList" :key="law.id">
+          <el-card class="gp-card">
+            <div slot="header" class="card-header">
+              <router-link :to="linkTo(law.id)"> {{ law.name }}</router-link>
+            </div>
+            <div class="card-body">
+              {{ law.caipanyaodian }}
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+    </div>
+    <div class="search-list">
+      <div class="recommend">
+        <h3>和你有共同喜好的人也爱看:</h3>
+      </div>
+      <el-row :gutter="24">
+        <el-col :span="8" v-for="law in recommendList" :key="law.id">
           <el-card class="gp-card">
             <div slot="header" class="card-header">
               <router-link :to="linkTo(law.id)"> {{ law.name }}</router-link>
@@ -31,6 +48,7 @@
 <script>
 // eslint-disable-next-line import/extensions
 import PacmanLoader from 'vue-spinner/src/PacmanLoader';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Index',
@@ -41,6 +59,7 @@ export default {
       totalListLength: 0,
       loading: false,
       time: 0,
+      recommendList: [],
     };
   },
   components: {
@@ -53,6 +72,14 @@ export default {
     },
     showSearchResultTitle() {
       return this.searchResultList.length > 0;
+    },
+    ...mapGetters([
+      'username',
+    ]),
+  },
+  watch: {
+    username() {
+      this.getRecommendLaw();
     },
   },
   methods: {
@@ -72,6 +99,14 @@ export default {
     linkTo(id) {
       return `/detail/${id}`;
     },
+    getRecommendLaw() {
+      this.$http.get('/law/recommend').then((res) => {
+        this.recommendList = res.data.data.slice(0, 9);
+      });
+    },
+  },
+  mounted() {
+    this.getRecommendLaw();
   },
 };
 </script>
@@ -116,7 +151,7 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  height: 70px;
+  height: 68px;
 }
 .card-header {
   white-space: nowrap;

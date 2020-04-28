@@ -25,6 +25,14 @@ export default {
   components: {
     NavBar,
   },
+  async mounted() {
+    const res = await this.$http.get('/user/userInfo');
+    if (res.data.code === 200) {
+      this.$store.commit('userLogin', {
+        userInfo: res.data.data,
+      });
+    }
+  },
 };
 </script>
 <style lang="less">

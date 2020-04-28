@@ -15,3 +15,6 @@ typings/
 
 dbconfig.js
 
+*/venv/
+
+__pycache__
