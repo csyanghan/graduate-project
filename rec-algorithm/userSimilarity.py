@@ -2,17 +2,22 @@ import pymysql.cursors
 from loguru import logger
 import math
 import json
+import os
+
+abs_path = os.path.split(os.path.realpath(__file__))[0]
 
 logger.remove()
-logger.add("log.log")
-connection = pymysql.connect(host='127.0.0.1',
+logger.add(os.path.join(abs_path, 'log.log'))
+
+connection = pymysql.connect(host='cdb-om3dvlfw.cd.tencentcdb.com',
+                             port=10093,
                              user='root',
-                             password='18817202463',
+                             password='mysql18817202463',
                              db='graduate-project',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
 
-def fetchAllBehaviorLog():
+def fetchItemUserLog():
   '''
   @retrun 物品-用户 的倒排表
   '''
@@ -72,7 +77,7 @@ def UserSimilarity():
   '''
   @return 用户相似度矩阵
   '''
-  item_users = fetchAllBehaviorLog()
+  item_users = fetchItemUserLog()
   # item_users = {
   #   'D36003FD6CF2CEED89686A7F1F443E4E': [1,2,3],
   #   '20648E2736420F735EDC29FE9C13F243': [4,5,6]
@@ -108,12 +113,12 @@ def UserSimilarity():
 if __name__ == '__main__':
   w = UserSimilarity()
   json_w = json.dumps(w)
-  with open('userItem.json', 'w') as fp:
+  with open(os.path.join(abs_path, 'w.json'), 'w') as fp:
     fp.write(json_w)
   logger.info('计算用户相似度成功!')
 
   ui = fetUserItemLog()
   json_ui = json.dumps(ui)
-  with open('userItem.json', 'w') as fp:
+  with open(os.path.join(abs_path, 'userItem.json'), 'w') as fp:
     fp.write(json_ui)
-  logger.info('计算用户-项目成功!')
+  logger.info('计算用户-项目表成功!')
