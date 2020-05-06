@@ -22,9 +22,9 @@ module.exports = appInfo => {
     // 单数据库信息配置
     client: {
       // host
-      host: '106.13.174.41',
+      host: 'cdb-om3dvlfw.cd.tencentcdb.com',
       // 端口号
-      port: '3306',
+      port: '10093',
       // 用户名
       user: 'root',
       // 密码

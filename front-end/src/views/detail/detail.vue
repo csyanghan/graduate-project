@@ -12,39 +12,66 @@
       </div>
     </div>
     <div class="judge">
-      <h3>裁判要点:</h3>
+      <h3 v-if="lawDetail.anqinzaiyao">案情摘要:</h3>
+      <p v-html="lawDetail.anqinzaiyao" v-if="lawDetail.anqinzaiyao"></p>
+      <h3 style="margin-top: 12px">裁判要点:</h3>
       <p>{{ lawDetail.caipanyaodian }}</p>
     </div>
+
+    <h3 style="margin-top: 24px">相似案例推荐:</h3>
+    <el-row :gutter="24">
+        <el-col :span="8" v-for="law in recommendList" :key="law.anming">
+          <el-card class="gp-card">
+            <div slot="header" class="card-header">
+              <router-link :to="linkTo(law.id)"> {{ law.anming }}</router-link>
+            </div>
+            <div class="card-body">
+              {{ law.caipanyaodian }}
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Detail',
   data() {
     return {
       lawDetail: {},
+      recommendList: [],
     };
   },
   computed: {
-    id() {
+    lawid() {
       return this.$route.params.id;
     },
+    ...mapGetters([
+      'id',
+    ]),
   },
   watch: {
-    id(newVal) {
+    lawid(newVal) {
       if (newVal) this.getDetail(newVal);
     },
   },
   methods: {
+    linkTo(id) {
+      return `/detail/${id}`;
+    },
     getDetail() {
+      const params = {
+        id: this.lawid,
+      };
+      if (this.id) params.userId = this.id;
       this.$http.get('/api/law/getLawById', {
-        params: {
-          id: this.id,
-        },
+        params,
       }).then((res) => {
         this.lawDetail = res.data.data;
+        this.recommendList = res.data.data.recommend.filter((item) => item.anming !== this.lawDetail.anming);
       });
     },
   },

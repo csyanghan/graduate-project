@@ -11,5 +11,6 @@ module.exports = app => {
   router.post('/law/search', controller.law.search);
   router.get('/law/getLawById', controller.law.getLawById);
   router.get('/law/recommend', controller.law.getRecommendByUser);
+  router.get('/law/recommendByItem', controller.law.getRecommendByItem);
   router.get('/user/userInfo', controller.user.getUserInfo);
 };

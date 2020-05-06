@@ -1,7 +1,7 @@
 <template>
   <div class="index-container" keep-alive>
     <div class="search">
-      <h1>案例搜索</h1>
+      <h1>案例推荐</h1>
       <el-input placeholder="请输入内容" v-model="searchKeyword" class="search-input" @keyup.enter.native="handleSearch">
         <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
       </el-input>
@@ -27,10 +27,30 @@
     </div>
     <div class="search-list">
       <div class="recommend">
-        <h3>和你有共同喜好的人也爱看:</h3>
+        <h3 v-if="username">和你有共同喜好的人也爱看:</h3>
+        <h3 v-else>大家都爱看:</h3>
+      </div>
+      <el-row :gutter="24" v-if="recommendList.length > 0">
+        <el-col :span="8" v-for="law in recommendList" :key="law.id">
+          <el-card class="gp-card">
+            <div slot="header" class="card-header">
+              <router-link :to="linkTo(law.id)"> {{ law.name }}</router-link>
+            </div>
+            <div class="card-body">
+              {{ law.caipanyaodian }}
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
+      <div v-else style="text-align:center; margin-top: 100px">暂无推荐,随便看看吧!</div>
+    </div>
+
+    <div class="search-list" style="margin-top:24px" v-if="recommendByItemList.length > 0">
+      <div class="recommend">
+        <h3>猜你喜欢:</h3>
       </div>
       <el-row :gutter="24">
-        <el-col :span="8" v-for="law in recommendList" :key="law.id">
+        <el-col :span="8" v-for="law in recommendByItemList" :key="law.id">
           <el-card class="gp-card">
             <div slot="header" class="card-header">
               <router-link :to="linkTo(law.id)"> {{ law.name }}</router-link>
@@ -60,6 +80,7 @@ export default {
       loading: false,
       time: 0,
       recommendList: [],
+      recommendByItemList: [],
     };
   },
   components: {
@@ -80,6 +101,7 @@ export default {
   watch: {
     username() {
       this.getRecommendLaw();
+      this.getRecommendLawByItem();
     },
   },
   methods: {
@@ -104,14 +126,20 @@ export default {
         this.recommendList = res.data.data.slice(0, 9);
       });
     },
+    getRecommendLawByItem() {
+      this.$http.get('/api/law/recommendByItem').then((res) => {
+        this.recommendByItemList = res.data.data;
+      });
+    },
   },
   mounted() {
     this.getRecommendLaw();
+    this.getRecommendLawByItem();
   },
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .search {
   text-align: center;
   margin-bottom: 48px;
