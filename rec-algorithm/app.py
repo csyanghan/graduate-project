@@ -1,4 +1,5 @@
-import jiagu
+import jieba
+import jieba.analyse
 import os
 from flask import Flask
 from flask import request
@@ -16,6 +17,7 @@ logger.add(os.path.join(abs_path, 'app.log'))
 
 @app.route('/recommend', methods=['POST'])
 def recommendBaseUser():
+  # 基于用户的推荐
   body = request.get_json(force=True)
   user_id = body['userId']
   rank = userCFRecommend(str(user_id), 10)
@@ -23,6 +25,7 @@ def recommendBaseUser():
 
 @app.route('/recommendBaseItem', methods=['POST'])
 def recommendBaseItem():
+  # 基于项目的推荐
   body = request.get_json(force=True)
   user_id = body['userId']
   rank = itemCFRecommend(str(user_id), 10)
@@ -30,10 +33,11 @@ def recommendBaseItem():
 
 @app.route('/recommendBaseContent', methods=['POST'])
 def recommendBaseContent():
+  # 相似案例推荐
   # https://www.jianshu.com/p/c48106149b6a
   body = request.get_json(force=True)
   caioanyaodian = body.get('caipanyaodian')
-  keywords = jiagu.keywords(caioanyaodian, 10) # 关键词
+  keywords = jieba.analyse.extract_tags(caioanyaodian, 10) # 关键词
   against = '+' + keywords[0] + ' ' + ' '.join(keywords[1:])
   sql ='''
     SELECT id, anming, caipanyaodian FROM anli

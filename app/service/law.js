@@ -2,7 +2,10 @@ const Service = require('egg').Service;
 
 class LawService extends Service {
   async search(keyword) {
-    const sql = `select * from anli where caipanyaodian like '%${keyword}%'`;
+    const sql = `
+    SELECT id, name, caipanyaodian FROM anli
+    WHERE MATCH (caipanyaodian)
+    AGAINST ('${keyword}' IN BOOLEAN MODE)`;
     const start = new Date().getTime();
     const results = await this.app.mysql.query(sql);
     const end = new Date().getTime();

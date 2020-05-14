@@ -20,7 +20,7 @@
 
     <h3 style="margin-top: 24px">相似案例推荐:</h3>
     <el-row :gutter="24">
-        <el-col :span="8" v-for="law in recommendList" :key="law.anming">
+        <el-col :span="8" v-for="law in recommendList" :key="law.id">
           <el-card class="gp-card">
             <div slot="header" class="card-header">
               <router-link :to="linkTo(law.id)"> {{ law.anming }}</router-link>

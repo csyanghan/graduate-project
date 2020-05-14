@@ -8,6 +8,7 @@ module.exports = app => {
   router.get('/', controller.home.index);
   router.post('/user/register', controller.user.register);
   router.post('/user/login', controller.user.login);
+
   router.post('/law/search', controller.law.search);
   router.get('/law/getLawById', controller.law.getLawById);
   router.get('/law/recommend', controller.law.getRecommendByUser);

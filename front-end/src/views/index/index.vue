@@ -24,6 +24,10 @@
           </el-card>
         </el-col>
       </el-row>
+      <div v-if="searchResultList.length === 0 && searchResultLengthZero" style="display:flex; flex-direction:column; align-items: center; padding: 24px 0;">
+        <i class="el-icon-search"/>
+        <div style="margin-top:24px">暂没有搜索结果</div>
+      </div>
     </div>
     <div class="search-list">
       <div class="recommend">
@@ -81,6 +85,7 @@ export default {
       time: 0,
       recommendList: [],
       recommendByItemList: [],
+      searchResultLengthZero: false,
     };
   },
   components: {
@@ -109,6 +114,7 @@ export default {
       this.loading = true;
       this.searchResultList = [];
       this.totalListLength = 0;
+      this.searchResultLengthZero = false;
       this.$http.post('/api/law/search', {
         keyword: this.searchKeyword,
       }).then((res) => {
@@ -116,6 +122,7 @@ export default {
         this.totalListLength = res.data.length;
         this.loading = false;
         this.time = res.data.time;
+        this.searchResultLengthZero = true;
       });
     },
     linkTo(id) {
