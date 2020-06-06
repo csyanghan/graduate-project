@@ -78,13 +78,7 @@ def UserSimilarity():
   @return 用户相似度矩阵
   '''
   item_users = fetchItemUserLog()
-  # item_users = {
-  #   'D36003FD6CF2CEED89686A7F1F443E4E': [1,2,3],
-  #   '20648E2736420F735EDC29FE9C13F243': [4,5,6]
-  # }
-
-  logger.info('物品-用户倒排表计算成功!')
-
+  
   C = dict()
   N = dict()
   for _, users in item_users.items():

@@ -43,7 +43,7 @@ async function fakeUserBrowseData(user, allLawId, length) {
   let userId = 0;
   if (user) userId = user.id;
   else userId = await insertUser();
-  logger.info(`user: ${userId} , browser: ${browseLaws} laws`)
+  logger.info(`user: ${userId} , browser: ${browseLaws} laws`);
   while (browseLaws > 0) {
     browseLaws--;
     const i = Math.floor(Math.random() * length);
