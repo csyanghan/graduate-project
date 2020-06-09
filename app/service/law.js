@@ -61,17 +61,15 @@ class LawService extends Service {
     };
   }
 
-  async getRecommendByContent(caipanyaodian) {
-    const ctx = this.ctx;
-    const res = await ctx.curl('http://127.0.0.1:5000/recommendBaseContent', {
-      method: 'POST',
-      data: {
-        caipanyaodian,
-      },
-      dataType: 'json',
-      contentType: 'json',
-    });
-    return res;
+  async getRecommendByContent(id) {
+    const anli = await this.app.mysql.get('anli', { id });
+    const keyword = anli.keyword;
+    const sql = `
+    SELECT id, anming, caipanyaodian FROM anli
+    WHERE MATCH (caipanyaodian)
+    AGAINST ('${keyword}' IN BOOLEAN MODE) limit 6;`;
+    const results = await this.app.mysql.query(sql);
+    return results;
   }
 }
 module.exports = LawService;

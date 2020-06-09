@@ -36,14 +36,23 @@ def recommendBaseContent():
   # 相似案例推荐
   # https://www.jianshu.com/p/c48106149b6a
   body = request.get_json(force=True)
-  caioanyaodian = body.get('caipanyaodian')
-  keywords = jieba.analyse.extract_tags(caioanyaodian, 10) # 关键词
-  against = '+' + keywords[0] + ' ' + ' '.join(keywords[1:])
+  anli_id = body.get('id')
+  get_anli_sql = '''
+    select keyword from anli where id='{}'
+  '''.format(anli_id)
+  anli_keyword = None
+  try:
+    with connection.cursor() as cursor:
+      cursor.execute(get_anli_sql)
+    connection.commit()
+    anli_keyword = cursor.fetchone().get('keyword')
+  except Exception as e:
+    logger.error('数据库错误连接错误: ' + str(e))
   sql ='''
     SELECT id, anming, caipanyaodian FROM anli
     WHERE MATCH (caipanyaodian)
     AGAINST ('{}' IN BOOLEAN MODE) limit 6;
-  '''.format(against)
+  '''.format(anli_keyword)
   result = []
   try:
     with connection.cursor() as cursor:

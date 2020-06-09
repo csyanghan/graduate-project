@@ -22,9 +22,8 @@ class LawController extends Controller {
       await this.app.mysql.insert('behavior_log', { user_id: userId, item_id: id });
     }
     const res = await ctx.service.law.getLawById(id);
-    const caipanyaodian = res.caipanyaodian ? res.caipanyaodian : '';
-    const recommend = await ctx.service.law.getRecommendByContent(caipanyaodian);
-    res.recommend = recommend.data;
+    const recommend = await ctx.service.law.getRecommendByContent(id);
+    res.recommend = recommend;
     ctx.body = {
       code: 200,
       data: res,
